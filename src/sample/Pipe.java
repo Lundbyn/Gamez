@@ -13,11 +13,13 @@ public class Pipe {
     private final int width = 60;
     private int height;
     private final Color color = Color.GREEN;
-    private Rectangle upper;
+    public Rectangle upper;
     private Rectangle lower;
     public AnimationTimer timer;
+    boolean active;
 
-    public Pipe(Pane mainPane, int tick, ArrayList<Rectangle> pipeList) {
+    public Pipe(Pane mainPane, ArrayList<Rectangle> pipeList) {
+        active = true;
         Random r = new Random();
 
         height = r.nextInt(500) + 50;
@@ -61,5 +63,17 @@ public class Pipe {
 
     public AnimationTimer getTimer() {
         return timer;
+    }
+
+    public Rectangle getUpper() {
+        return upper;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

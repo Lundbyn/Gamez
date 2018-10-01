@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -16,10 +17,11 @@ public class Controller implements Initializable{
 
     @FXML AnchorPane mainPane;
     @FXML Label txtPreGame;
+    @FXML Label txtPoints;
 
     AnimationTimer timer;
 
-    private int tick;
+    private int tick, pts;
     private Pipe pipe;
     private ArrayList<Rectangle> pipeList = new ArrayList<>();
     private ArrayList<Pipe> pipes = new ArrayList<>();
@@ -33,6 +35,7 @@ public class Controller implements Initializable{
         bird = new Bird(mainPane);
         started = false;
         alive = true;
+        pts = 0;
 
 
         tick = 0;
@@ -42,12 +45,13 @@ public class Controller implements Initializable{
                 mainPane.requestFocus();
                 tick++;
                 if(tick % 150 == 0 && started && alive) {
-                    pipe = new Pipe(mainPane, tick, pipeList);
+                    pipe = new Pipe(mainPane, pipeList);
                     pipes.add(pipe);
                     bird.getCircle().toFront();
                 }
                 testCollision();
                 buttonClicked();
+                updatePts();
             }
         };
         timer.start();
@@ -61,6 +65,17 @@ public class Controller implements Initializable{
         }
         if(bird.getCircle().getTranslateY() > 800 || bird.getCircle().getTranslateY() < 0) {
             killBird();
+        }
+    }
+
+    private void updatePts() {
+        for(Pipe pipe : pipes) {
+            if(bird.getCircle().getTranslateX() > pipe.getUpper().getTranslateX() && pipe.isActive()) {
+                pts++;
+                pipe.setActive(false);
+                txtPoints.setText("Points: " + pts);
+            }
+            txtPoints.toFront();
         }
     }
 
@@ -102,6 +117,8 @@ public class Controller implements Initializable{
         mainPane.getChildren().remove(bird.getCircle());
         bird = null;
         bird = new Bird(mainPane);
+        pts = 0;
+        txtPoints.setText("Points: " + pts);
 
         alive = true;
         bird.setCanJump(true);

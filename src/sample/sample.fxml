@@ -10,5 +10,9 @@
          <font>
             <Font name="Impact" size="24.0" />
          </font></Label>
+      <Label fx:id="txtPoints" layoutX="570.0" layoutY="50.0" text="Points: 0">
+         <font>
+            <Font name="Impact" size="18.0" />
+         </font></Label>
    </children>
 </AnchorPane>
